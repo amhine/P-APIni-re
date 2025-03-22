@@ -68,5 +68,30 @@ class CommandeController extends Controller
             ], 404);
         }
     }
+    public function annulerCommande($id)
+    {
+        try {
+            $commande = Commande::findOrFail($id); 
+            if ($commande->status !== 'en attente') {
+                return response()->json([
+                    'error' => 'La commande ne peut pas  annuler',
+                ], 400);
+            }
+            $commande->status = 'annulee';
+            $commande->save();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Votre commande  annuler avec succees.',
+                'commande' => $commande,
+            ], 200);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'error' => 'Commande non trouver',
+                'message' => $e->getMessage(),
+            ], 404);
+        }
+    }
 }
 

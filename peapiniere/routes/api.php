@@ -35,3 +35,5 @@ Route::get('/plantes',[plantescontroller::class,'index']);
 Route::get('/plantes/{slug}',[plantescontroller::class,'show']);
 Route::post('/commander', [CommandeController::class, 'passerCommande']);
 Route::get('/commande/{id}', [CommandeController::class, 'etatCommande']);
+
+Route::put('/commande/{id}/annuler', [CommandeController::class, 'annulerCommande']);
