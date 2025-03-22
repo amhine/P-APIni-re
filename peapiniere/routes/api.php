@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\plantescontroller;
+use App\Http\Controllers\Api\CommandeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -32,3 +33,4 @@ Route::post('/login', [AuthController::class, 'loginUser']);
 Route::middleware('auth:api')->post('/logout', [AuthController::class, 'logout']);
 Route::get('/plantes',[plantescontroller::class,'index']);
 Route::get('/plantes/{slug}',[plantescontroller::class,'show']);
+Route::post('/commander', [CommandeController::class, 'passerCommande']);

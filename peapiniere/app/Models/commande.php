@@ -10,15 +10,18 @@ class commande extends Model
     use HasFactory;
     protected $table ='commandes';
     protected $fillable = [
-        'nome',
-        'status'
+        'status',
+        'user_id'
     ];
     public function utilisateur()
     {
         return $this->belongsTo(user::class);
     }
-    public function plante()
-    {
-        return $this->belongsTo(Plantes::class);
-    }
+    public function plantes()
+{
+    return $this->belongsToMany(Plantes::class, 'commande_plante', 'commande_id', 'plante_id')
+                ->withPivot('quantite')
+                ->withTimestamps();
+}
+
 }
