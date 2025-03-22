@@ -17,7 +17,7 @@ class plantescontroller extends Controller
 
             if ($plantes->isEmpty()) {
                 return response()->json([
-                    'error' => 'Aucune plante trouvée',
+                    'error' => 'Aucune plante ',
                     'code' => 404
                 ], 404);
             }
@@ -29,7 +29,31 @@ class plantescontroller extends Controller
 
         } catch (Exception $e) {
             return response()->json([
-                'error' => 'Une erreur est survenue lors de la récupération des plantes',
+                'error' => ' erreur ',
+                'message' => $e->getMessage(),
+                'code' => 500
+            ], 500);
+        }
+    }
+    public function show($slug)
+    {
+        try {
+            $plante = Plantes::where('slug', $slug)->first(); 
+            if (!$plante) {
+                return response()->json([
+                    'error' => 'Plante non trouver',
+                    'code' => 404
+                ], 404);
+            }
+
+            return response()->json([
+                'success' => true,
+                'data' => $plante
+            ], 200);
+
+        } catch (Exception $e) {
+            return response()->json([
+                'error' => ' erreur ',
                 'message' => $e->getMessage(),
                 'code' => 500
             ], 500);

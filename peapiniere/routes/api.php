@@ -31,3 +31,4 @@ Route::post('/register', [AuthController::class, 'createUser']);
 Route::post('/login', [AuthController::class, 'loginUser']);
 Route::middleware('auth:api')->post('/logout', [AuthController::class, 'logout']);
 Route::get('/plantes',[plantescontroller::class,'index']);
+Route::get('/plantes/{slug}',[plantescontroller::class,'show']);
