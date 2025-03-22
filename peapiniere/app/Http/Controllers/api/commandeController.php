@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\DAO\CommandeDAO;
 use App\Http\Requests\passercommande;
+use App\Models\commande;
 
 
 class CommandeController extends Controller
@@ -45,6 +46,26 @@ class CommandeController extends Controller
                 'error' => 'Une erreur est survenue lors du traitement de la commande.',
                 'message' => $e->getMessage(),
             ], 500);
+        }
+    }
+    public function etatCommande($id)
+    {
+        try {
+            $commande = Commande::findOrFail($id); 
+
+            return response()->json([
+                'success' => true,
+                'commande' => [
+                    'id' => $commande->id,
+                    'status' => $commande->status, 
+                ]
+            ], 200);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'error' => 'Commande non trouvée',
+                'message' => $e->getMessage(),
+            ], 404);
         }
     }
 }

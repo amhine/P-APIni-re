@@ -34,3 +34,4 @@ Route::middleware('auth:api')->post('/logout', [AuthController::class, 'logout']
 Route::get('/plantes',[plantescontroller::class,'index']);
 Route::get('/plantes/{slug}',[plantescontroller::class,'show']);
 Route::post('/commander', [CommandeController::class, 'passerCommande']);
+Route::get('/commande/{id}', [CommandeController::class, 'etatCommande']);
