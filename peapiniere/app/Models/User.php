@@ -8,6 +8,8 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Tymon\JWTAuth\Contracts\JWTSubject;
+use App\Models\role;
+
 
 class User extends Authenticatable implements JWTSubject
 {
@@ -44,6 +46,7 @@ class User extends Authenticatable implements JWTSubject
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+  
 
     public function getJWTIdentifier()
     {
@@ -55,6 +58,10 @@ class User extends Authenticatable implements JWTSubject
     }
     public function commandes()
     {
-        return $this->hasMany(Commande::class, 'utilisateur_id');
+        return $this->hasMany(Commande::class, 'user_id');
     }
+    public function role()
+{
+    return $this->belongsTo(Role::class, 'id_role');
+}
 }

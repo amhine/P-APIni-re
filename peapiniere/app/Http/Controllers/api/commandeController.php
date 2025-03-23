@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\DAO\CommandeDAO;
 use App\Http\Requests\passercommande;
 use App\Models\commande;
+use Illuminate\Support\Facades\Auth;
 
 
 class CommandeController extends Controller
@@ -92,6 +93,24 @@ class CommandeController extends Controller
                 'message' => $e->getMessage(),
             ], 404);
         }
+    }
+    public function comandestatus($id)
+    {
+        if (Auth::user()->role->nomerole !== 'employe') {
+           
+            return response()->json(['error' => 'Accès refusé'], 403);
+        }
+        $commande = Commande::find($id);
+
+        if (!$commande) {
+            return response()->json(['error' => 'Commande introuvable'], 404);
+        }
+        $commande->update(['status' => Commande::STATUS_PRETE]);
+
+        return response()->json([
+            'message' => 'Commande marquée comme prête à être livrée',
+            'commande' => $commande
+        ]);
     }
 }
 

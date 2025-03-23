@@ -13,6 +13,9 @@ class commande extends Model
         'status',
         'user_id'
     ];
+    const STATUS_EN_COURS = 'en attente';
+    const STATUS_PRETE = 'en preparer';
+    
     public function utilisateur()
     {
         return $this->belongsTo(user::class);

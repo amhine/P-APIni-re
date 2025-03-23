@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Hash;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use App\Http\Requests\CreateUserRequest;
 use App\Http\Requests\login;
+use App\Models\Role;
+
 
 
 class AuthController extends Controller
@@ -32,12 +34,13 @@ class AuthController extends Controller
                 'status' => true,
                 'message' => 'User Created Successfully',
                 'token' => $token,
+                'role' => $user->role->nomerole
             ], 201);
 
         } catch (\Throwable $th) {
             return response()->json([
                 'status' => false,
-                'message' => "User not Created ", 
+                'message' => $th->getMessage(), 
             ], 500);
         }
     }
