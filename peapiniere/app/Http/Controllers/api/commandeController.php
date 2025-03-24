@@ -7,16 +7,18 @@ use Illuminate\Http\Request;
 use App\DAO\CommandeDAO;
 use App\Http\Requests\passercommande;
 use App\Models\commande;
+use App\Repository\Interface\CommandeInterface;
 use Illuminate\Support\Facades\Auth;
-
+use App\Models\plantes;
+use Illuminate\Support\Str;
 
 class CommandeController extends Controller
 {
-    protected $commandeDAO;
+    protected $commandeRepository;
 
-    public function __construct(CommandeDAO $commandeDAO)
+    public function __construct(CommandeInterface $commandeRepository)
     {
-        $this->commandeDAO = $commandeDAO;
+        $this->commandeRepository = $commandeRepository;
     }
 
     public function passerCommande(passercommande  $request)
@@ -28,15 +30,22 @@ class CommandeController extends Controller
             $slugquantites = [];
             
             foreach ($validated['plantes'] as $plante) {
-                $slug = $plante['slug'];
+                $slug = Str::slug($plante['slug']);
                 $quantite = $plante['quantite'];
-                $slugquantites[$slug] = $quantite;
+                if (!Plantes::where('slug', $slug)->exists()) {
+                    return response()->json([
+                        'error' => "Plante avec le slug '{$slug}' non trouvée."
+                    ], 404);
+                }
+
+                $slugQuantites[$slug] = $quantite;
+        
             }
             
-            $commande = $this->commandeDAO->createCommande(
-                $validated['user_id'],
-                $slugquantites
-            );
+            $commande = $this->commandeRepository->create([
+                'user_id' => $validated['user_id'],
+                'slug_quantites' => $slugquantites,  
+            ]);
         
             return response()->json([
                 'success' => true,

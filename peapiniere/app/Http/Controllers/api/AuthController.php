@@ -9,19 +9,27 @@ use Illuminate\Support\Facades\Hash;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use App\Http\Requests\CreateUserRequest;
 use App\Http\Requests\login;
+
+use App\Repository\Interface\UserInterface;
 use App\Models\Role;
 
 
 
 class AuthController extends Controller
 {
+    protected $userRepository;
+
+    public function __construct(UserInterface $userRepository)
+    {
+        $this->userRepository = $userRepository;
+    }
     public function createUser(CreateUserRequest $request)
     {
         
         try {
             $validateUser = $request->validated();
 
-            $user = User::create([
+            $user = $this->userRepository->create([
                 'name' => $validateUser['name'],
                 'email' => $validateUser['email'],
                 'password' => Hash::make($validateUser['password']),

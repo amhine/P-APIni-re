@@ -4,16 +4,23 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Repository\Interface\plantesInterface;
 use App\Models\plantes;
 use Exception;
 
 
 class plantescontroller extends Controller
 {
+    protected $plantesRepository;
+
+    public function __construct(plantesInterface $plantesRepository)
+    {
+        $this->plantesRepository = $plantesRepository;
+    }
     public function index()
     {
         try {
-            $plantes = Plantes::all();
+            $plantes = $this->plantesRepository->all(); 
 
             if ($plantes->isEmpty()) {
                 return response()->json([
@@ -38,7 +45,7 @@ class plantescontroller extends Controller
     public function show($slug)
     {
         try {
-            $plante = Plantes::where('slug', $slug)->first(); 
+            $plante = $this->plantesRepository->findBySlug($slug);  
             if (!$plante) {
                 return response()->json([
                     'error' => 'Plante non trouver',

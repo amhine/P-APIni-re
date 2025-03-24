@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\plantescontroller;
 use App\Http\Controllers\Api\CommandeController;
+use App\Http\Controllers\Api\CategorieController;
 use Illuminate\Support\Facades\Auth;
 
 /*
@@ -32,12 +33,27 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::post('/register', [AuthController::class, 'createUser']);
 Route::post('/login', [AuthController::class, 'loginUser']);
 Route::middleware('auth:api')->post('/logout', [AuthController::class, 'logout']);
+
+
+Route::middleware(['auth:api', 'role:client'])->group(function () {
 Route::get('/plantes',[plantescontroller::class,'index']);
 Route::get('/plantes/{slug}',[plantescontroller::class,'show']);
 Route::post('/commander', [CommandeController::class, 'passerCommande']);
 Route::get('/commande/{id}', [CommandeController::class, 'etatCommande']);
-
 Route::put('/commande/{id}/annuler', [CommandeController::class, 'annulerCommande']);
+});
+
 Route::middleware(['auth:api', 'role:employe'])->group(function () {
     Route::put('/commandes/{id}/preparer', [CommandeController::class, 'comandestatus']);
 });
+
+
+Route::middleware(['auth:api', 'role:admin'])->group(function () {
+    Route::get('/affichercategorie', [CategorieController::class, 'index']);
+    Route::post('/ajoutercategorie', [CategorieController::class, 'store']);
+    Route::put('/updatecategorie/{id}',[CategorieController::class , 'update']);
+    Route::delete('/supprimercategorie/{id}',[CategorieController::class , 'destroy']);
+
+});
+
+
