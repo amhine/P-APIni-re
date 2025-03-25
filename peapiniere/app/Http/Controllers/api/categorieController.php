@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Repository\Interface\CategorieInterface;
+use App\Http\Requests\categoriestore;
 
 class CategorieController extends Controller
 {
@@ -25,11 +26,9 @@ class CategorieController extends Controller
         ], 200);
     }
 
-    public function store(Request $request)
+    public function store(categoriestore $request)
     {
-        $request->validate([
-            'name' => 'required|string|unique:categories,name'
-        ]);
+       
 
         $categorie = $this->categorieRepository->create([
             'name' => $request->name

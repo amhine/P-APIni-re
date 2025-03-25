@@ -38,9 +38,9 @@ Route::middleware('auth:api')->post('/logout', [AuthController::class, 'logout']
 Route::middleware(['auth:api', 'role:client'])->group(function () {
 Route::get('/plantes',[plantescontroller::class,'index']);
 Route::get('/plantes/{slug}',[plantescontroller::class,'show']);
-Route::post('/commander', [CommandeController::class, 'passerCommande']);
-Route::get('/commande/{id}', [CommandeController::class, 'etatCommande']);
-Route::put('/commande/{id}/annuler', [CommandeController::class, 'annulerCommande']);
+Route::post('/commandes', [CommandeController::class, 'passerCommande']);
+Route::get('/commandes/{id}/etats', [CommandeController::class, 'etatCommande']);
+Route::put('/commandes/{id}/annuler', [CommandeController::class, 'annulerCommande']);
 });
 
 Route::middleware(['auth:api', 'role:employe'])->group(function () {
@@ -49,11 +49,15 @@ Route::middleware(['auth:api', 'role:employe'])->group(function () {
 
 
 Route::middleware(['auth:api', 'role:admin'])->group(function () {
-    Route::get('/affichercategorie', [CategorieController::class, 'index']);
-    Route::post('/ajoutercategorie', [CategorieController::class, 'store']);
-    Route::put('/updatecategorie/{id}',[CategorieController::class , 'update']);
-    Route::delete('/supprimercategorie/{id}',[CategorieController::class , 'destroy']);
+    Route::get('/categories/afficher', [CategorieController::class, 'index']);
+    Route::post('/categories/ajouter', [CategorieController::class, 'store']);
+    Route::put('/categories/{id}/update',[CategorieController::class , 'update']);
+    Route::delete('/categories/{id}/supprimer',[CategorieController::class , 'destroy']);
+    Route::post('/ajouter/plantes',[plantescontroller::class , 'store']);
+    Route::put('/plantes/{id}/modifier',[plantescontroller::class , 'update']);
+    Route::delete('/plantes/{id}/supprimer',[plantescontroller::class , 'destroy']);
 
 });
 
 
+   
