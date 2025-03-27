@@ -1,0 +1,141 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "API de Gestion des Catégories",
+        "description": "Documentation de l'API pour la gestion des catégories",
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "http://localhost:8000/api",
+            "description": "Serveur local"
+        }
+    ],
+    "paths": {
+        "/api/categories/afficher": {
+            "get": {
+                "tags": [
+                    "Catégories"
+                ],
+                "summary": "Afficher toutes les catégories",
+                "operationId": "getCategories",
+                "responses": {
+                    "200": {
+                        "description": "Liste des catégories"
+                    }
+                }
+            }
+        },
+        "/api/categories/ajouter": {
+            "post": {
+                "tags": [
+                    "Catégories"
+                ],
+                "summary": "Ajouter une nouvelle catégorie",
+                "operationId": "storeCategory",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Nouvelle Catégorie"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Catégorie créée"
+                    }
+                }
+            }
+        },
+        "/api/categories/{id}/update": {
+            "put": {
+                "tags": [
+                    "Catégories"
+                ],
+                "summary": "Mettre à jour une catégorie",
+                "operationId": "updateCategory",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID de la catégorie à mettre à jour",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Catégorie Modifiée"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Catégorie mise à jour"
+                    }
+                }
+            }
+        },
+        "/api/categories/{id}/supprimer": {
+            "delete": {
+                "tags": [
+                    "Catégories"
+                ],
+                "summary": "Supprimer une catégorie",
+                "operationId": "deleteCategory",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID de la catégorie à supprimer",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Catégorie supprimée"
+                    },
+                    "404": {
+                        "description": "Catégorie non trouvée"
+                    }
+                }
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Catégories",
+            "description": "Catégories"
+        }
+    ]
+}
