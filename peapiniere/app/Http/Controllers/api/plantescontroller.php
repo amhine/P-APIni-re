@@ -70,8 +70,21 @@ class plantescontroller extends Controller
     public function store(plantestore $request)
     {
         try {
+            $images = $request->input('images', []);
+
+        if (count($images) > 4) {
+            return response()->json([
+                'error' => 'Vous ne pouvez pas ajouter plus de 4 images pour une plante.',
+                'code' => 422
+            ], 422);
+        }
             $plante = Plantes::create($request->validated());
+            if (!empty($images)) {
+                $plante->images = $images; 
+                $plante->save();
+            }
             return response()->json(['success' => true, 'data' => $plante], 201);
+
         } catch (\Exception $e) {
             return response()->json([
                 'error' => ' erreur ',
@@ -90,10 +103,23 @@ class plantescontroller extends Controller
                     'code' => 404
                 ], 404);
             }
+            $images = $request->input('images', []);
+        
+        if (count($images) > 4) {
+            return response()->json([
+                'error' => 'Vous ne pouvez pas ajouter plus de 4 images pour une plante.',
+                'code' => 422
+            ], 422);
+        }
 
             $plante->update($request->all());
+            if (!empty($images)) {
+                $plante->images = $images; 
+                $plante->save();
+            }
 
             return response()->json(['success' => true, 'data' => $plante], 200);
+            
         } catch (\Exception $e) {
             return response()->json([
                 'error' => ' erreur ',

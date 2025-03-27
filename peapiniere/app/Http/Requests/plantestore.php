@@ -24,7 +24,8 @@ class plantestore extends FormRequest
         return [
             'name' => 'required|string|max:255|unique:plantes,name',
             'description' => 'nullable|string',
-            'image' => 'nullable|string',
+            'images' => 'array|max:4',
+            'images.*' => 'url',
             'prix' => 'required|numeric|min:0'
         ];
     }

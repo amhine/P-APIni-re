@@ -6,6 +6,8 @@ use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\plantescontroller;
 use App\Http\Controllers\Api\CommandeController;
 use App\Http\Controllers\Api\CategorieController;
+use App\Http\Controllers\Api\StatistiquesController;
+
 use Illuminate\Support\Facades\Auth;
 
 /*
@@ -53,11 +55,15 @@ Route::middleware(['auth:api', 'role:admin'])->group(function () {
     Route::post('/categories/ajouter', [CategorieController::class, 'store']);
     Route::put('/categories/{id}/update',[CategorieController::class , 'update']);
     Route::delete('/categories/{id}/supprimer',[CategorieController::class , 'destroy']);
-    Route::post('/ajouter/plantes',[plantescontroller::class , 'store']);
     Route::put('/plantes/{id}/modifier',[plantescontroller::class , 'update']);
     Route::delete('/plantes/{id}/supprimer',[plantescontroller::class , 'destroy']);
+    Route::get('/statistiques/topplantes', [StatistiquesController::class, 'topPlantes']);
+    Route::get('/statistiques/statut', [StatistiquesController::class, 'statistiquesParStatut']);
+    Route::post('/plantes/ajouter',[plantescontroller::class , 'store']);
 
 });
+
+
 
 
    
